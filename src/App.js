@@ -1,25 +1,65 @@
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+import {useEffect, useState} from "react";
+import Column from "./components/Column";
+import 'bootstrap/dist/css/bootstrap.css'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [statuses, setStatuses] = useState([]);
+    const [tasks, setTasks] = useState([])
+
+    const getStatuses = () => {
+        axios.get('https://expressjs-server.vercel.app/statuses')
+            .then((res) => {
+                setStatuses(res.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            .finally(() => {
+                console.log('Finish')
+            })
+    }
+
+    const getTasks = () => {
+        axios.get('https://expressjs-server.vercel.app/tasks')
+            .then(res => {
+                setTasks(res.data)
+            })
+            .catch(error => {
+                alert('Server currently unavailable')
+            })
+            .finally(() => {
+                console.log('Finish')
+            })
+    }
+
+    useEffect(() => {
+        getStatuses()
+        getTasks()
+    }, [])
+
+    return (
+
+        <div className="App">
+
+            <h1> Kanban Board</h1>
+
+            <div className="container text-center">
+                <div className="row align-items-start">
+                    {statuses.map(status =>
+                        <Column
+                            status={status}
+                            key={status._id}
+                            tasks={tasks}
+
+                        />
+                    )}
+
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default App;
