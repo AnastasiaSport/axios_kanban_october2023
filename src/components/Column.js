@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from "./Card";
 
-const Column = ({status, tasks}) => {
+const Column = ({status, tasks, statuses, priorities, changePriority}) => {
 
     return (
         <div className="col">
@@ -14,6 +14,11 @@ const Column = ({status, tasks}) => {
                 <Card
                     task={task}
                     key={task._id}
+                    statuses={statuses}
+                    priorities={priorities}
+                    changePriority={changePriority}
+
+
                 />
                 )}
 
