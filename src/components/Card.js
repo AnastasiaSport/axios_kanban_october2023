@@ -1,17 +1,21 @@
 import React from 'react';
+import UpdateModal from "./UpdateModal";
+import DeleteModal from "./DeleteModal";
 
-const Card = ({task, statuses, priorities, changePriority}) => {
+const Card = ({task, statuses, priorities, changePriority, moveTask, updateTask, deleteTask}) => {
 
 
     return (
         <div className="card text-center" style={{marginBottom: '10px'}}>
             <div className="card-header">
                 <button type="button" className="btn btn-outline-success"
+                        onClick={() => moveTask(task._id, task.status, 'left')}
                         disabled={task.status === statuses[0].status}
                 >←
                 </button>
                 {task.status}
                 <button type="button" className="btn btn-outline-success"
+                        onClick={() => moveTask(task._id, task.status, 'right')}
                         disabled={task.status === statuses[statuses.length - 1].status}
                 >→
                 </button>
@@ -19,8 +23,19 @@ const Card = ({task, statuses, priorities, changePriority}) => {
             <div className="card-body">
                 <h5 className="card-title">{task.name}</h5>
                 <p className="card-text">{task.description}</p>
-                <button type="button" className="btn btn-danger">Delete</button>
-                <button type="button" className="btn btn-primary">Update</button>
+
+                <DeleteModal
+                    task={task}
+                    deleteTask={deleteTask}
+                />
+
+                <UpdateModal
+                task={task}
+                statuses={statuses}
+                priorities={priorities}
+                updateTask={updateTask}
+                />
+
 
             </div>
             <div className="card-footer text-body-secondary">

@@ -5,7 +5,6 @@ import Column from "./components/Column";
 import 'bootstrap/dist/css/bootstrap.css'
 import Myloader from "./components/Myloader";
 import CreateModal from "./components/CreateModal";
-import Loader from "./components/Loader";
 
 function App() {
     const [statuses, setStatuses] = useState([]);
@@ -98,15 +97,6 @@ function App() {
         setIsloading(true)
     }, [])
 
-    if (error) {
-        return (
-            <div className='App'>
-                <h1> Kanban Board</h1>
-                <h2> {error} </h2>
-            </div>
-        )
-    }
-
     return (
 
         <div className="App">
@@ -123,25 +113,29 @@ function App() {
             <div className="container text-center">
                 <div className="row align-items-start">
 
-                    {isloading &&
+                    {isloading ?
 
-                        <div className='loader'><Loader/></div>}
+                        <div className='loader'>  <Myloader/> </div>
 
-                    <>
-                        {statuses.map(status =>
-                            <Column
-                                status={status}
-                                key={status._id}
-                                tasks={tasks}
-                                statuses={statuses}
-                                priorities={priorities}
-                                changePriority={changePriority}
-                                moveTask={moveTask}
-                                updateTask={updateTask}
-                                deleteTask={deleteTask}
-                            />
-                        )}
-                    </>
+                        : error ? <h2> {error} </h2>
+                            :
+                            <>
+                                {statuses.map(status =>
+                                    <Column
+                                        status={status}
+                                        key={status._id}
+                                        tasks={tasks}
+                                        statuses={statuses}
+                                        priorities={priorities}
+                                        changePriority={changePriority}
+                                        moveTask={moveTask}
+                                        updateTask={updateTask}
+                                        deleteTask={deleteTask}
+                                    />
+                                )}
+                            </>
+                    }
+
                 </div>
             </div>
 
